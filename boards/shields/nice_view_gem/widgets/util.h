@@ -10,10 +10,12 @@
 #define BUFFER_OFFSET_MIDDLE -44
 #define BUFFER_OFFSET_BOTTOM -129
 
-#define LVGL_BACKGROUND                                                                            \
-    IS_ENABLED(CONFIG_NICE_VIEW_WIDGET_INVERTED) ? lv_color_black() : lv_color_white()
-#define LVGL_FOREGROUND                                                                            \
-    IS_ENABLED(CONFIG_NICE_VIEW_WIDGET_INVERTED) ? lv_color_white() : lv_color_black()
+// Always render in the default (known-good) polarity. When
+// CONFIG_NICE_VIEW_WIDGET_INVERTED is set, the whole framebuffer is inverted
+// once at flush time (see custom_status_screen.c) -- uniform, and avoids the
+// per-element palette/parent-background mismatches that cause black boxes.
+#define LVGL_BACKGROUND lv_color_white()
+#define LVGL_FOREGROUND lv_color_black()
 
 struct status_state {
     uint8_t battery;
